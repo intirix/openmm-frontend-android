@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<color name="background_color">#3385FF</color>
+	<color name="background_selected">#000000</color>
+	<color name="background_selected2">#1F5099</color>
+
+    <string name="app_name">OpenMM Frontend</string>
+    <string name="title_activity_main">OpenMM</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_config">OpenMM Configuration</string>
+
+</resources>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/show_episode_list_label"
+        style="@style/defaultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:paddingRight="50dp"
+        android:text="TextViewaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" />
+    <TextView
+        android:id="@+id/show_episode_list_count"
+        style="@style/defaultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="10dp"
+        android:layout_alignParentRight="true"
+        android:text="0/0" />
+
+   	<RatingBar
+   	    android:id="@+id/show_episode_list_rating"
+   	    style="@style/myRating"
+   	    android:layout_width="wrap_content"
+   	    android:layout_height="wrap_content"
+   	    android:layout_alignParentRight="true"
+   	    android:layout_below="@+id/show_episode_list_count"
+   	    android:isIndicator="true"
+   	    android:stepSize="0.5"
+   	    android:numStars="5"
+   	    android:rating="2.5"
+   	    android:paddingRight="1dp" />
+   	<!--     	    style="@android:attr/ratingBarStyleSmall"
+   	 -->
+    
+</RelativeLayout>
