@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
@@ -165,8 +169,14 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 			final String url = params[ 0 ];
 			try
 			{
+				final CredentialsProvider cprov = new BasicCredentialsProvider();
+				final String username = OpenMMUtil.getServerUsername( BaseDynamicActivity.this );
+				final String password = OpenMMUtil.getServerPassword( BaseDynamicActivity.this );
+				cprov.setCredentials( new AuthScope( AuthScope.ANY_HOST, AuthScope.ANY_PORT ), new UsernamePasswordCredentials( username, password ) );
 				final DefaultHttpClient client = new DefaultHttpClient();
+				client.setCredentialsProvider( cprov );
 				final HttpGet request = new HttpGet( url );
+				
 				Log.d( TAG, "Downloading " + url );
 				final HttpResponse resp = client.execute( request );
 				if ( resp.getStatusLine().getStatusCode() == 200 )
@@ -177,6 +187,10 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 					CacheUtil.writeToCache( BaseDynamicActivity.this, getDataUrl(), buffer.toByteArray() );
 
 					return buffer.toString();
+				}
+				else
+				{
+					Log.e( TAG, "Error: " + resp.getStatusLine().getStatusCode() );
 				}
 
 			}

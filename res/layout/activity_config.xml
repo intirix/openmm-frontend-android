@@ -45,6 +45,50 @@
         android:layout_alignParentLeft="true"
         android:paddingTop="10dp"
         android:layout_below="@+id/textView1"
+        android:text="Username"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/config_edit_username"
+        style="@style/defaultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView2"
+        android:layout_toRightOf="@+id/textView2"
+        android:paddingLeft="15dp"
+        android:ems="10" />
+
+    <TextView
+        android:id="@+id/textView3"
+        style="@style/defaultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:paddingTop="10dp"
+        android:layout_below="@+id/textView2"
+        android:text="Password"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <EditText
+        android:id="@+id/config_edit_password"
+        style="@style/defaultText"
+        android:password="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView3"
+        android:layout_toRightOf="@+id/textView3"
+        android:paddingLeft="15dp"
+        android:ems="10" />
+
+    
+    <TextView
+        android:id="@+id/textView4"
+        style="@style/defaultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:paddingTop="10dp"
+        android:layout_below="@+id/textView3"
         android:text="Rows Per Screen"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -53,19 +97,20 @@
         style="@style/defaultText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_toRightOf="@+id/textView2"
+        android:layout_alignBottom="@+id/textView4"
+        android:layout_toRightOf="@+id/textView4"
         android:paddingLeft="15dp"
         android:ems="10"
         android:inputType="number" />
 
+    
     <Button
         android:id="@+id/config_edit_save"
         style="@style/defaultText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/textView2"
+        android:layout_below="@+id/textView4"
         android:layout_marginTop="10dp"
         android:text="Save" />
 

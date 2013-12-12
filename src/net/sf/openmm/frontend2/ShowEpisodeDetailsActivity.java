@@ -195,7 +195,7 @@ public class ShowEpisodeDetailsActivity extends BaseDynamicActivity< String, Sho
 				{
 					Log.w( TAG, "Failed to encode url", e );
 				}
-				url = OpenMMUtil.getServerUrl( this ) + "/download" + url;
+				url = OpenMMUtil.getServerAccessUrl( this ) + "/download" + url;
 			}
 			
 			OpenMMUtil.playUrl( this, url, ext );

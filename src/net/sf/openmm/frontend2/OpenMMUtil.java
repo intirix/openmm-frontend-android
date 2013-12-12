@@ -1,6 +1,7 @@
 package net.sf.openmm.frontend2;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Point;
@@ -17,7 +18,7 @@ public class OpenMMUtil
 	
 	static final String PREF_NAME = "OpenMM2";
 
-	public static SharedPreferences getPrefs( Activity act )
+	public static SharedPreferences getPrefs( Context act )
 	{
 		return act.getSharedPreferences( OpenMMUtil.PREF_NAME, 0 );
 	}
@@ -30,6 +31,37 @@ public class OpenMMUtil
 	public static String getServerUrl( Activity act )
 	{
 		return getPrefs( act ).getString( "server.url", "http://localhost:3760" );
+	}
+
+	/**
+	 * Get the server url with username/password
+	 * @param act
+	 * @return
+	 */
+	public static String getServerAccessUrl( Activity act )
+	{
+		return getServerUrl( act ).replace( "://", "://" + getServerUsername( act ) + ':' + getServerPassword( act ) + '@' );
+	}
+
+	/**
+	 * Get the server password
+	 * @param act
+	 * @return
+	 */
+	public static String getServerPassword( Context act )
+	{
+		return getPrefs( act ).getString( "server.password", "password" );
+	}
+	
+
+	/**
+	 * Get the server username
+	 * @param act
+	 * @return
+	 */
+	public static String getServerUsername( Context act )
+	{
+		return getPrefs( act ).getString( "server.username", "admin" );
 	}
 	
 	/**
