@@ -190,7 +190,7 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 				}
 				else
 				{
-					Log.e( TAG, "Error: " + resp.getStatusLine().getStatusCode() );
+					Log.e(TAG,"Failed to download " + url + ", Response code: " + resp.getStatusLine().getStatusCode() );
 				}
 
 			}

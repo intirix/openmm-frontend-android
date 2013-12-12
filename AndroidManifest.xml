@@ -54,6 +54,18 @@
             android:name="net.sf.openmm.frontend2.ShowEpisodeDetailsActivity"
             android:label="@string/title_activity_main">
         </activity>
+        <activity
+            android:name="net.sf.openmm.frontend2.MoviePrefixListActivity"
+            android:label="@string/title_activity_main">
+        </activity>
+        <activity
+            android:name="net.sf.openmm.frontend2.MovieListActivity"
+            android:label="@string/title_activity_main">
+        </activity>
+        <activity
+            android:name="net.sf.openmm.frontend2.MovieDetailsActivity"
+            android:label="@string/title_activity_main">
+        </activity>
     </application>
 
 </manifest>
