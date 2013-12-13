@@ -2,6 +2,9 @@ package net.sf.openmm.frontend2;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Locale;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -102,47 +105,19 @@ public class MovieDetailsActivity extends BaseDynamicActivity< String, MovieDeta
 
 			}.execute( bannerUrl );
 		}
+		
+		
 		final int mediumTextSize = getTextMaxHeight() * 3 / 4;
-		final int mediaTextHeight = getTextViewHeight() * 3 / 4;
+		//final int mediaTextHeight = getTextViewHeight() * 3 / 4;
 
 		final TextView description = (TextView)getHeaderView().findViewById( R.id.movie_details_description );
 		description.setText( response.getMovie().getDescription() );
 		description.setTextSize( TypedValue.COMPLEX_UNIT_PX, mediumTextSize );
-
-		final TextView releaseLabel = (TextView)getHeaderView().findViewById( R.id.movie_details_release_label );
-		releaseLabel.setHeight( mediaTextHeight );
-		releaseLabel.setTextSize( TypedValue.COMPLEX_UNIT_PX, mediumTextSize );
-		final TextView mpaaLabel = (TextView)getHeaderView().findViewById( R.id.movie_details_mpaa_label );
-		mpaaLabel.setHeight( mediaTextHeight );
-		mpaaLabel.setTextSize( TypedValue.COMPLEX_UNIT_PX, mediumTextSize );
-		final TextView watchedLabel = (TextView)getHeaderView().findViewById( R.id.movie_details_watched_label );
-		watchedLabel.setHeight( mediaTextHeight );
-		watchedLabel.setTextSize( TypedValue.COMPLEX_UNIT_PX, mediumTextSize );
-
-		final TextView release = (TextView)getHeaderView().findViewById( R.id.movie_details_release );
-		release.setText( response.getMovie().getReleaseDate() );
-		release.setHeight( mediaTextHeight );
-		release.setTextSize( TypedValue.COMPLEX_UNIT_PX, mediumTextSize );
-
-		final TextView mpaa = (TextView)getHeaderView().findViewById( R.id.movie_details_mpaa );
-		mpaa.setText( response.getMovie().getMpaaRating() );
-		mpaa.setHeight( mediaTextHeight );
-		mpaa.setTextSize( TypedValue.COMPLEX_UNIT_PX, mediumTextSize );
-
-		final TextView watched = (TextView)getHeaderView().findViewById( R.id.movie_details_watched );
-		if ( true )
-		{
-			watched.setVisibility( View.GONE );
-			watchedLabel.setVisibility( View.GONE );
-		}
-		else
-		{
-			//watched.setText( response.getEpisode().getEpisode().getLastWatched() );
-			watched.setHeight( mediaTextHeight );
-			watched.setTextSize( TypedValue.COMPLEX_UNIT_PX, mediumTextSize );
-			watched.setVisibility( View.VISIBLE );
-			watchedLabel.setVisibility( View.VISIBLE );
-		}
+		
+		applyTextToRow( response.getMovie().getReleaseDate(), R.id.movie_details_release_label, R.id.movie_details_release );
+		applyTextToRow( response.getMovie().getMpaaRating(), R.id.movie_details_mpaa_label, R.id.movie_details_mpaa );
+		applyTextToRow( response.getMovie().getLastWatched(), R.id.movie_details_watched_label, R.id.movie_details_watched );
+		applyTextToRow( response.getMovie().getRuntime(), R.id.movie_details_runtime_label, R.id.movie_details_runtime );
 
 		final RatingBar ratingBar = (RatingBar)getHeaderView().findViewById( R.id.movie_details_rating );
 		float rating = 0.0f;
@@ -160,6 +135,27 @@ public class MovieDetailsActivity extends BaseDynamicActivity< String, MovieDeta
 
 	}
 
+	private void applyTextToRow( String text, int labelId, int textId )
+	{
+		final int mediumTextSize = getTextMaxHeight() * 3 / 4;
+		final int mediaTextHeight = getTextViewHeight() * 3 / 4;
+		
+		final TextView textView = (TextView)getHeaderView().findViewById( textId );
+		final TextView labelView = (TextView)getHeaderView().findViewById( labelId );
+		if ( text != null && text.length() > 0 )
+		{
+			textView.setText( text );
+			textView.setHeight( mediaTextHeight );
+			textView.setTextSize( TypedValue.COMPLEX_UNIT_PX, mediumTextSize );
+			labelView.setHeight( mediaTextHeight );
+			labelView.setTextSize( TypedValue.COMPLEX_UNIT_PX, mediumTextSize );
+		}
+		else
+		{
+			textView.setVisibility( View.GONE );
+			labelView.setVisibility( View.GONE );
+		}
+	}
 
 
 	private void playVideo()
@@ -167,6 +163,10 @@ public class MovieDetailsActivity extends BaseDynamicActivity< String, MovieDeta
 		if ( links != null && links.length > 0 )
 		{
 			new UpdateServerTask( this ).execute( "action", "WatchMovie", "movieId", "" + getIntent().getIntExtra( "MOVIE_ID", 0 ) );
+			final SimpleDateFormat sdf = new SimpleDateFormat( "yyyy/MM/dd", Locale.US );
+			final String lastWatched = sdf.format( Calendar.getInstance().getTime() );
+			applyTextToRow( lastWatched, R.id.movie_details_watched_label, R.id.movie_details_watched );
+			requery();
 			
 			
 			String url = links[ 0 ].getUrl();

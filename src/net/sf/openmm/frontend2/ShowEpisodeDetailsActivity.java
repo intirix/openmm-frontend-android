@@ -179,7 +179,8 @@ public class ShowEpisodeDetailsActivity extends BaseDynamicActivity< String, Sho
 		if ( links != null && links.length > 0 )
 		{
 			new UpdateServerTask( this ).execute( "action", "WatchShowEpisode", "ep", "" + getIntent().getIntExtra( "EPISODE_ID", 0 ) );
-			
+			requery();
+
 			
 			String url = links[ 0 ].getUrl();
 			final String ext = url.replaceFirst( ".*\\.", "" );

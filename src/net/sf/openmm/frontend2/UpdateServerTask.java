@@ -5,8 +5,12 @@ import java.util.List;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -32,7 +36,12 @@ public class UpdateServerTask extends AsyncTask< String, Integer, Integer >
 	{
 		try
 		{
+			final CredentialsProvider cprov = new BasicCredentialsProvider();
+			final String username = OpenMMUtil.getServerUsername( act );
+			final String password = OpenMMUtil.getServerPassword( act );
+			cprov.setCredentials( new AuthScope( AuthScope.ANY_HOST, AuthScope.ANY_PORT ), new UsernamePasswordCredentials( username, password ) );
 			final DefaultHttpClient client = new DefaultHttpClient();
+			client.setCredentialsProvider( cprov );
 			final HttpPost request = new HttpPost( OpenMMUtil.getServerUrl( act ) + "/api/update" );
 			
 			final List< NameValuePair > args = new ArrayList< NameValuePair >( params.length / 2 );

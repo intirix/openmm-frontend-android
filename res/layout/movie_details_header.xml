@@ -81,17 +81,35 @@
                     android:layout_below="@+id/movie_details_mpaa"
                     android:gravity="right"
                     android:text="1989/01/01" />
+                
+                <TextView
+                    android:id="@+id/movie_details_runtime_label"
+                    style="@style/defaultText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/movie_details_watched_label"
+                    android:text="Runtime" />
+
+                <TextView
+                    android:id="@+id/movie_details_runtime"
+                    style="@style/defaultText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/movie_details_watched"
+                    android:gravity="right"
+                    android:text="1 Hour 20 Min" />
                 </RelativeLayout>
 
             <RatingBar
                 android:id="@+id/movie_details_rating"
-   	    		style="@style/myRatingBig"
+                style="@style/myRatingBig"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:isIndicator="true"
                 android:numStars="5"
-                android:paddingTop="5dp"
                 android:paddingRight="1dp"
+                android:paddingTop="5dp"
                 android:rating="2.5"
                 android:stepSize="0.5" />
         </LinearLayout>
@@ -103,5 +121,5 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Movie Description" />
-    
+
 </LinearLayout>

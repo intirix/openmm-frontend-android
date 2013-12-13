@@ -158,6 +158,13 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 
 	}
 
+	/**
+	 * Requery
+	 */
+	public void requery()
+	{
+		new QueryTask().execute( getDataUrl() );
+	}
 
 
 	private class QueryTask extends AsyncTask< String, Integer, String >
