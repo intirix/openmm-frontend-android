@@ -30,7 +30,7 @@ public class OpenMMUtil
 	 */
 	public static String getServerUrl( Activity act )
 	{
-		return getPrefs( act ).getString( "server.url", "http://localhost:3760" );
+		return getPrefs( act ).getString( "server.url", "http://localhost:3760" ) + "/openmm";
 	}
 
 	/**
