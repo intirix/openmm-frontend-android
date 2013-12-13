@@ -21,7 +21,7 @@ public class ConfigActivity extends Activity implements OnClickListener
 		setContentView( R.layout.activity_config );
 		
 		final EditText txt1 = (EditText)findViewById( R.id.config_edit_serverurl );
-		txt1.setText( OpenMMUtil.getServerUrl( this ) );
+		txt1.setText( OpenMMUtil.getServerConfigUrl( this ) );
 
 		final EditText txtUsername = (EditText)findViewById( R.id.config_edit_username );
 		txtUsername.setText( OpenMMUtil.getServerUsername( this ) );
