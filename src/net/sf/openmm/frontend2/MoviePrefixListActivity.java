@@ -2,11 +2,13 @@ package net.sf.openmm.frontend2;
 
 import java.util.Arrays;
 
+import net.sf.openmm.frontend2.BaseDynamicActivity.ViewType;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import com.intirix.openmm.server.api.MoviePrefixListResponse;
@@ -20,6 +22,17 @@ public class MoviePrefixListActivity extends BaseDynamicActivity< MoviePrefixCou
 	{
 		super.onCreate( savedInstanceState );
 		setTitle( "Movies" );
+		
+		GridView gridView = (GridView)findViewById( R.id.grid );
+		gridView.setNumColumns( 5 );
+	}
+
+
+
+	@Override
+	protected ViewType getViewType()
+	{
+		return ViewType.GRID;
 	}
 
 
@@ -44,13 +57,13 @@ public class MoviePrefixListActivity extends BaseDynamicActivity< MoviePrefixCou
 	protected void applyDataToRow( MoviePrefixCounts obj, View view, Object tag )
 	{
 		final TextView label = (TextView)view.findViewById( R.id.movie_prefix_list_label );
-		label.setHeight( getTextViewHeight() );
+		//label.setHeight( getTextViewHeight() );
 		label.setText( obj.getPrefix() );
-		label.setTextSize( TypedValue.COMPLEX_UNIT_PX, getTextMaxHeight() );
-		label.setGravity( Gravity.CENTER_VERTICAL );
+		label.setTextSize( TypedValue.COMPLEX_UNIT_PX, getTextMaxHeight() * 2f );
+		//label.setGravity( Gravity.CENTER_VERTICAL );
 		
-		final TextView count = (TextView)view.findViewById( R.id.movie_prefix_list_count );
-		count.setText( obj.getNumMoviesAvailable() + "/" + obj.getNumMovies() );
+		//final TextView count = (TextView)view.findViewById( R.id.movie_prefix_list_count );
+		//count.setText( obj.getNumMoviesAvailable() + "/" + obj.getNumMovies() );
 	}
 
 	@Override

@@ -16,14 +16,18 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
+import android.widget.GridView;
 import android.widget.ListView;
 
 /**
@@ -33,7 +37,7 @@ import android.widget.ListView;
  * @param <E> the type of object that represents each row
  * @param <F> the type of object that gets deserialized from the server
  */
-public abstract class BaseDynamicActivity< E, F > extends ListActivity
+public abstract class BaseDynamicActivity< E, F > extends Activity
 {
 	protected final ArrayList< E > listItems = new ArrayList< E >( 5 );
 
@@ -50,6 +54,12 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 	private int textMaxHeight = 0;
 
 	private F response;
+
+	protected enum ViewType
+	{
+		LIST,
+		GRID
+	}
 
 	public ArrayAdapter< E > getAdapter()
 	{
@@ -86,6 +96,15 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 	}
 
 	/**
+	 * Get the view type
+	 * @return LIST or GRID
+	 */
+	protected ViewType getViewType()
+	{
+		return ViewType.LIST;
+	}
+
+	/**
 	 * Should we cache the response
 	 * @return
 	 */
@@ -106,7 +125,6 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
 	{
-		// TODO Auto-generated method stub
 		super.onCreate( savedInstanceState );
 
 		final String title = getIntent().getStringExtra( "TITLE" );
@@ -119,17 +137,44 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 		textMaxHeight = OpenMMUtil.getTextMaxHeight( this );
 
 		inflator = LayoutInflater.from( this );
+		
+		AbsListView baseView = null;
 
-		final ListView listView = getListView();
-		listView.setBackgroundColor( OpenMMUtil.BACKGROUND_COLOR );
-
-
-		final int headerLayoutNumber = getHeaderLayout();
-		if ( headerLayoutNumber != 0 )
+		if ( getViewType() == ViewType.LIST )
 		{
-			headerView = inflator.inflate( headerLayoutNumber, null );
-			listView.addHeaderView( headerView );
+			setContentView( R.layout.dynamic_list_view );
+
+			final ListView listView = (ListView)findViewById( android.R.id.list );
+			baseView = listView;
+
+
+			final int headerLayoutNumber = getHeaderLayout();
+			if ( headerLayoutNumber != 0 )
+			{
+				headerView = inflator.inflate( headerLayoutNumber, null );
+				listView.addHeaderView( headerView );
+			}
+
 		}
+		else if ( getViewType() == ViewType.GRID )
+		{
+			setContentView( R.layout.dynamic_grid_view );
+			
+			final GridView gridView = (GridView)findViewById( R.id.grid );
+			baseView = gridView;
+		}
+		
+		baseView.setBackgroundColor( OpenMMUtil.BACKGROUND_COLOR );
+		
+		baseView.setOnItemClickListener( new OnItemClickListener() {
+
+			@Override
+			public void onItemClick( AdapterView< ? > l, View v, int position, long id )
+			{
+				onListItemClick( (AbsListView)l, v, position, id );
+			}
+			
+		} );
 
 		adapter = new ArrayAdapter< E >( this,
 				getRowLayout(),
@@ -154,7 +199,8 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 			}
 
 		};
-		listView.setAdapter( adapter );
+		baseView.setAdapter( adapter );
+
 
 		// only process the cached xml if caching is enabled
 		if ( shouldCacheResponse() )
@@ -222,7 +268,7 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 					{
 						CacheUtil.writeToCache( BaseDynamicActivity.this, getDataUrl(), buffer.toByteArray() );
 					}
-					
+
 					//Log.d( TAG, "Contents: " + buffer.toString() );
 
 					return buffer.toString();
@@ -329,10 +375,8 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 	}
 
 	@SuppressWarnings( "unchecked" )
-	@Override
-	protected final void onListItemClick( ListView l, View v, int position, long id )
+	protected final void onListItemClick( AbsListView l, View v, int position, long id )
 	{
-		super.onListItemClick( l, v, position, id );
 		Log.d( TAG, "Selected " + position );
 		final E obj = (E)l.getItemAtPosition( position );
 		if ( obj != null )

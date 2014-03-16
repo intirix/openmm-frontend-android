@@ -62,9 +62,13 @@ public class ConfigActivity extends Activity implements OnClickListener
 		editor.putInt( "display.rows", Integer.parseInt( txt2.getText().toString() ) );
 		editor.commit();
 		
+		finish();
+		
+		/*
 		final Intent i = new Intent( this, MainActivity.class );
 		i.addFlags( Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK );
 		startActivity( i );
+		*/
 	}
 
 	
