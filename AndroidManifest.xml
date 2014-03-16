@@ -39,6 +39,10 @@
             android:label="@string/title_activity_main">
         </activity>
         <activity
+            android:name="net.sf.openmm.frontend2.SearchActivity"
+            android:label="@string/title_activity_main">
+        </activity>
+        <activity
             android:name="net.sf.openmm.frontend2.ShowListActivity"
             android:label="@string/title_activity_main">
         </activity>

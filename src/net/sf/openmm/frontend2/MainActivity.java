@@ -33,6 +33,7 @@ public class MainActivity extends Activity implements OnItemClickListener
 		setContentView( R.layout.main );
 		
         listItems.add( "Browse" );
+        listItems.add( "Search" );
         listItems.add( "Movies" );
         listItems.add( "Shows" );
         listItems.add( "Config" );
@@ -98,15 +99,20 @@ public class MainActivity extends Activity implements OnItemClickListener
 		}
 		else if ( position == 1 )
 		{
-			startActivity( new Intent( this, MoviePrefixListActivity.class ) );
+			startActivity( new Intent( this, SearchActivity.class ) );
 			overridePendingTransition( android.R.anim.slide_in_left, android.R.anim.slide_out_right );
 		}
 		else if ( position == 2 )
 		{
-			startActivity( new Intent( this, ShowListActivity.class ) );
+			startActivity( new Intent( this, MoviePrefixListActivity.class ) );
 			overridePendingTransition( android.R.anim.slide_in_left, android.R.anim.slide_out_right );
 		}
 		else if ( position == 3 )
+		{
+			startActivity( new Intent( this, ShowListActivity.class ) );
+			overridePendingTransition( android.R.anim.slide_in_left, android.R.anim.slide_out_right );
+		}
+		else if ( position == 4 )
 		{
 			startActivity( new Intent( this, ConfigActivity.class ) );
 			overridePendingTransition( android.R.anim.slide_in_left, android.R.anim.slide_out_right );

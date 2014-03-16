@@ -10,6 +10,7 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.simpleframework.xml.Serializer;
@@ -84,6 +85,24 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 		return response;
 	}
 
+	/**
+	 * Should we cache the response
+	 * @return
+	 */
+	protected boolean shouldCacheResponse()
+	{
+		return true;
+	}
+
+	/**
+	 * Should we load data when the page loads
+	 * @return
+	 */
+	protected boolean shouldLoadDataOnPageLoad()
+	{
+		return true;
+	}
+
 	@Override
 	protected void onCreate( Bundle savedInstanceState )
 	{
@@ -137,25 +156,31 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 		};
 		listView.setAdapter( adapter );
 
-		final String cachedResult = CacheUtil.getCacheContentsAsString( this, getDataUrl() );
-		if ( cachedResult != null )
+		// only process the cached xml if caching is enabled
+		if ( shouldCacheResponse() )
 		{
-			processXml( cachedResult );
+			final String cachedResult = CacheUtil.getCacheContentsAsString( this, getDataUrl() );
+			if ( cachedResult != null )
+			{
+				processXml( cachedResult );
+			}
 		}
 
 	}
-	
-	
+
+
 
 	@Override
 	protected void onResume()
 	{
 		super.onResume();
-		
-		// fire off the async task to download the xml file
-		// we put this in onResume() to auto-refresh the data
-		new QueryTask().execute( getDataUrl() );
 
+		if ( shouldLoadDataOnPageLoad() )
+		{
+			// fire off the async task to download the xml file
+			// we put this in onResume() to auto-refresh the data
+			requery();
+		}
 	}
 
 	/**
@@ -182,8 +207,8 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 				cprov.setCredentials( new AuthScope( AuthScope.ANY_HOST, AuthScope.ANY_PORT ), new UsernamePasswordCredentials( username, password ) );
 				final DefaultHttpClient client = new DefaultHttpClient();
 				client.setCredentialsProvider( cprov );
-				final HttpGet request = new HttpGet( url );
-				
+				final HttpRequestBase request = new HttpGet( url );
+
 				Log.d( TAG, "Downloading " + url );
 				final HttpResponse resp = client.execute( request );
 				if ( resp.getStatusLine().getStatusCode() == 200 )
@@ -191,13 +216,20 @@ public abstract class BaseDynamicActivity< E, F > extends ListActivity
 					final HttpEntity entity = resp.getEntity();
 					final ByteArrayOutputStream buffer = new ByteArrayOutputStream( 1024 );
 					IOUtils.copy( entity.getContent(), buffer );
-					CacheUtil.writeToCache( BaseDynamicActivity.this, getDataUrl(), buffer.toByteArray() );
+
+					// write to cache if this page enables it
+					if ( shouldCacheResponse() )
+					{
+						CacheUtil.writeToCache( BaseDynamicActivity.this, getDataUrl(), buffer.toByteArray() );
+					}
+					
+					//Log.d( TAG, "Contents: " + buffer.toString() );
 
 					return buffer.toString();
 				}
 				else
 				{
-					Log.e(TAG,"Failed to download " + url + ", Response code: " + resp.getStatusLine().getStatusCode() );
+					Log.e( TAG,"Failed to download " + url + ", Response code: " + resp.getStatusLine().getStatusCode() );
 				}
 
 			}
