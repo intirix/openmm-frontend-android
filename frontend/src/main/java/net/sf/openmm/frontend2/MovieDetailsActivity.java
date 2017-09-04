@@ -91,7 +91,7 @@ public class MovieDetailsActivity extends BaseDynamicActivity< String, MovieDeta
 					playVideo();
 				}
 			} );
-			final String bannerUrl = OpenMMUtil.getServerUrl( this ) + '/' + bannerPath;
+			final String bannerUrl = OpenMMUtil.getServerUrl( this ) + bannerPath;
 			new DownloadImageTask(this) {
 
 				@Override

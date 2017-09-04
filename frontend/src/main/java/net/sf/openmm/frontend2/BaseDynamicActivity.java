@@ -245,6 +245,7 @@ public abstract class BaseDynamicActivity< E, F > extends Activity
 		protected String doInBackground( String... params )
 		{
 			final String url = params[ 0 ];
+			final long t1 = System.currentTimeMillis();
 			try
 			{
 				final CredentialsProvider cprov = new BasicCredentialsProvider();
@@ -282,6 +283,12 @@ public abstract class BaseDynamicActivity< E, F > extends Activity
 			catch ( Exception e )
 			{
 				Log.e( TAG, "Failed to get " + url, e );
+			}
+			finally
+			{
+				final long t2 = System.currentTimeMillis();
+				final long dt = t2 - t1;
+				Log.i( TAG, "Donwloaded " + url + " in " + dt + "ms");
 			}
 			return null;
 		}

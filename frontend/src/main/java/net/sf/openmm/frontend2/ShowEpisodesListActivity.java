@@ -96,7 +96,7 @@ public class ShowEpisodesListActivity extends BaseDynamicActivity< EpisodeDetail
 		if ( bannerPath != null && bannerPath.length() > 0 )
 		{
 			final ImageView iv = (ImageView)getHeaderView().findViewById( R.id.show_season_list_header_image );
-			final String bannerUrl = OpenMMUtil.getServerUrl( this ) + '/' + bannerPath;
+			final String bannerUrl = OpenMMUtil.getServerUrl( this ) + bannerPath;
 			new DownloadImageTask(this) {
 
 				@Override

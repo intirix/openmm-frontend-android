@@ -42,7 +42,7 @@ public class DownloadImageTask extends AsyncTask< String, Integer, Bitmap >
 		{
 			return BitmapFactory.decodeStream( cacheStream );
 		}
-		
+		final long t1 = System.currentTimeMillis();
 		try
 		{
 			final CredentialsProvider cprov = new BasicCredentialsProvider();
@@ -74,6 +74,12 @@ public class DownloadImageTask extends AsyncTask< String, Integer, Bitmap >
 		catch ( Exception e )
 		{
 			Log.e( TAG, "Failed to get " + url, e );
+		}
+		finally
+		{
+			final long t2 = System.currentTimeMillis();
+			final long dt = t2 - t1;
+			Log.i( TAG, "Download of image " + url + " to " + dt + "ms");
 		}
 		return null;
 
